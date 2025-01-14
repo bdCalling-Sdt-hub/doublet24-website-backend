@@ -62,9 +62,12 @@ const updateProfileToDB = async (
     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
   }
 
+  const excludeFields: Array<keyof IUser> = ['email'];
+  excludeFields.forEach(field => delete payload[field]);
+
   //unlink file here
-  if (payload.profile) {
-    unlinkFile(isExistUser.profile);
+  if (payload.image) {
+    unlinkFile(isExistUser.image);
   }
 
   const updateDoc = await User.findOneAndUpdate({ _id: id }, payload, {
