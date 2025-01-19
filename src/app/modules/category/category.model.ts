@@ -22,6 +22,7 @@ const categorySchema = new Schema<ICategory>(
     },
     subCategoriesCount: {
       type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

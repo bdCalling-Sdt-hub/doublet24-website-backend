@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../../errors/ApiError';
 import unlinkFile from '../../../shared/unlinkFile';
+import QueryBuilder from '../../builder/QueryBuilder';
 import { ICategory } from './category.interface';
 import { Category } from './category.model';
 
@@ -13,8 +14,19 @@ const createCategoryToDB = async (payload: ICategory): Promise<ICategory> => {
   return createCategory;
 };
 
-const getAllCategoryFromDB = async (): Promise<ICategory[]> => {
-  const result = await Category.find();
+const getAllCategoryFromDB = async (
+  query: Record<string, unknown>
+): Promise<ICategory[]> => {
+  const searchableFields = ['name'];
+  const categoryQuery = new QueryBuilder(Category.find(), query)
+    .search(searchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await categoryQuery.modelQuery;
+
   return result;
 };
 
