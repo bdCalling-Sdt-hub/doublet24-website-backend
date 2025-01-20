@@ -64,6 +64,34 @@ class QueryBuilder<T> {
 
     return this;
   }
+
+  //populating
+  populate(populateFields: string[], selectFields: Record<string, unknown>) {
+    this.modelQuery = this.modelQuery.populate(
+      populateFields.map(field => ({
+        path: field,
+        select: selectFields[field],
+      }))
+    );
+    return this;
+  }
+
+  //pagination information
+  async getPaginationInfo() {
+    const total = await this.modelQuery.model.countDocuments(
+      this.modelQuery.getFilter()
+    );
+    const limit = Number(this?.query?.limit) || 10;
+    const page = Number(this?.query?.page) || 1;
+    const totalPage = Math.ceil(total / limit);
+
+    return {
+      total,
+      limit,
+      page,
+      totalPage,
+    };
+  }
 }
 
 export default QueryBuilder;

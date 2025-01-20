@@ -1,6 +1,7 @@
 import express from 'express';
 import { AuthRoutes } from '../app/modules/auth/auth.route';
 import { CategoryRoutes } from '../app/modules/category/category.route';
+import { SubcategoryRoutes } from '../app/modules/subcategory/subcategory.route';
 import { UserRoutes } from '../app/modules/user/user.route';
 const router = express.Router();
 
@@ -19,7 +20,7 @@ const apiRoutes = [
   },
   {
     path: '/subcategory',
-    route: CategoryRoutes,
+    route: SubcategoryRoutes,
   },
 ];
 
