@@ -3,12 +3,23 @@ import ApiError from '../../../errors/ApiError';
 import unlinkFile from '../../../shared/unlinkFile';
 import { IGenericResponse } from '../../../types/common';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { Category } from '../category/category.model';
 import { ISubcategory } from './subcategory.interface';
 import { Subcategory } from './subcategory.model';
 
 const createSubcategoryToDB = async (
   payload: ISubcategory
 ): Promise<ISubcategory> => {
+  //check category
+  const isCategoryExist = await Category.findById(payload.categoryId);
+  if (!isCategoryExist) {
+    throw new ApiError(
+      StatusCodes.NOT_FOUND,
+      'Invalid category selected. Please choose a valid category ID.'
+    );
+  }
+
+  //create subcategory
   const createSubcategory = await Subcategory.create(payload);
   if (!createSubcategory) {
     throw new ApiError(
@@ -16,6 +27,13 @@ const createSubcategoryToDB = async (
       'Failed to created Subcategory'
     );
   }
+
+  //update to category
+  await Category.findByIdAndUpdate(
+    isCategoryExist._id,
+    { $inc: { subCategoriesCount: 1 } },
+    { new: true }
+  );
 
   return createSubcategory;
 };

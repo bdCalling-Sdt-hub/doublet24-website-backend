@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../../errors/ApiError';
 import unlinkFile from '../../../shared/unlinkFile';
+import { IGenericResponse } from '../../../types/common';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { ICategory } from './category.interface';
 import { Category } from './category.model';
@@ -16,7 +17,7 @@ const createCategoryToDB = async (payload: ICategory): Promise<ICategory> => {
 
 const getAllCategoryFromDB = async (
   query: Record<string, unknown>
-): Promise<ICategory[]> => {
+): Promise<IGenericResponse<ICategory[]>> => {
   const searchableFields = ['name'];
   const categoryQuery = new QueryBuilder(Category.find(), query)
     .search(searchableFields)
@@ -27,7 +28,9 @@ const getAllCategoryFromDB = async (
 
   const result = await categoryQuery.modelQuery;
 
-  return result;
+  const pagination = await categoryQuery.getPaginationInfo();
+
+  return { meta: pagination, data: result };
 };
 
 const getSingleCategoryFromDB = async (

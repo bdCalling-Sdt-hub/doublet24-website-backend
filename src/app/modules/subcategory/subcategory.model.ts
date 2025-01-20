@@ -37,6 +37,7 @@ subcategorySchema.pre('save', async function (next) {
       'This subcategory already exists within the selected category. Please use a different name and try again.'
     );
   }
+
   next();
 });
 
