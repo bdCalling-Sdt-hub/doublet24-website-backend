@@ -15,7 +15,7 @@ const productSchema = new Schema<IProduct>(
       type: String,
     },
     weight: {
-      type: String,
+      type: Number,
       required: true,
     },
     description: {
@@ -34,7 +34,6 @@ const productSchema = new Schema<IProduct>(
     status: {
       type: String,
       enum: ['In Stock', 'Out of Stock'],
-      default: 'In Stock',
     },
   },
   { timestamps: true }

@@ -4,10 +4,9 @@ export type IProduct = {
   name: string;
   price: number;
   brand?: string;
-  weight: string;
+  weight: number;
   description: string;
   category: Types.ObjectId;
-  subcategory: Types.ObjectId;
   image: string[];
   status: 'In Stock' | 'Out of Stock';
 };
