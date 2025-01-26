@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
   '/create-product',
-  auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+  auth(USER_ROLES.SUPER_ADMIN),
   fileUploadHandler(),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = ProductValidation.createProductZodSchema.parse(
@@ -17,5 +17,13 @@ router.post(
     return ProductController.createProduct(req, res, next);
   }
 );
+
+router
+  .route('/:id')
+  .get(ProductController.getSingleProduct)
+  .patch(auth(USER_ROLES.SUPER_ADMIN), ProductController.updateProduct)
+  .delete(auth(USER_ROLES.SUPER_ADMIN), ProductController.deleteProduct);
+
+router.get('/', ProductController.getAllProducts);
 
 export const ProductRoutes = router;
