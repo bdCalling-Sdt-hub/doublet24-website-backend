@@ -7,6 +7,13 @@ import { IProduct } from './product.interface';
 import { Product } from './product.model';
 
 const createProductToDB = async (payload: IProduct): Promise<IProduct> => {
+  if (!payload.image || payload.image.length < 3) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'A product must have at least 3 images for proper display.'
+    );
+  }
+
   const result = await Product.create(payload);
   return result;
 };
@@ -42,6 +49,28 @@ const getSingleProductFromDB = async (id: string): Promise<IProduct | null> => {
   return isExistProduct;
 };
 
+const updateProductToDB = async (
+  id: string,
+  payload: Partial<IProduct>
+): Promise<IProduct | null> => {
+  const isExistProduct = await Product.findById(id);
+  if (!isExistProduct) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Product doesn't exist!");
+  }
+
+  //unlink files
+  if (payload.image && payload.image.length > 0) {
+    for (let img of isExistProduct.image) {
+      unlinkFile(img);
+    }
+  }
+
+  const updateProduct = await Product.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return updateProduct;
+};
+
 const deleteProductToDB = async (id: string): Promise<IProduct | null> => {
   const isExistProduct = await Product.findById(id);
   if (!isExistProduct) {
@@ -64,4 +93,5 @@ export const ProductService = {
   getAllProductsFromDB,
   getSingleProductFromDB,
   deleteProductToDB,
+  updateProductToDB,
 };

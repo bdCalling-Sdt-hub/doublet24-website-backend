@@ -46,7 +46,7 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const images = getMultipleFilesPath(req.files, 'image');
   const data = { image: images, ...req.body };
 
-  const result = await ProductService.createProductToDB(data);
+  const result = await ProductService.updateProductToDB(req.params.id, data);
 
   sendResponse(res, {
     success: true,

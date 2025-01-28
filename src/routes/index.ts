@@ -1,6 +1,7 @@
 import express from 'express';
 import { AuthRoutes } from '../app/modules/auth/auth.route';
 import { CategoryRoutes } from '../app/modules/category/category.route';
+import { OrderRoutes } from '../app/modules/order/order.route';
 import { ProductRoutes } from '../app/modules/product/product.route';
 import { SubcategoryRoutes } from '../app/modules/subcategory/subcategory.route';
 import { UserRoutes } from '../app/modules/user/user.route';
@@ -26,6 +27,10 @@ const apiRoutes = [
   {
     path: '/product',
     route: ProductRoutes,
+  },
+  {
+    path: '/order',
+    route: OrderRoutes,
   },
 ];
 
