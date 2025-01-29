@@ -2,39 +2,38 @@ import express, { NextFunction, Request, Response } from 'express';
 import { USER_ROLES } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 import fileUploadHandler from '../../middlewares/fileUploadHandler';
-import { ProductController } from './product.controller';
-import { ProductValidation } from './product.validation';
+import { AboutController } from './about.controller';
+import { AboutValidation } from './about.validation';
 const router = express.Router();
 
 router.post(
-  '/create-product',
+  '/create-content',
   auth(USER_ROLES.SUPER_ADMIN),
   fileUploadHandler(),
   (req: Request, res: Response, next: NextFunction) => {
-    req.body = ProductValidation.createProductZodSchema.parse(
+    req.body = AboutValidation.createAboutZodSchema.parse(
       JSON.parse(req.body.data)
     );
-    return ProductController.createProduct(req, res, next);
+    return AboutController.createAboutContent(req, res, next);
   }
 );
 
 router
   .route('/:id')
-  .get(ProductController.getSingleProduct)
   .patch(
     auth(USER_ROLES.SUPER_ADMIN),
     fileUploadHandler(),
     (req: Request, res: Response, next: NextFunction) => {
       if (req.body.data) {
-        req.body = ProductValidation.updateProductZodSchema.parse(
+        req.body = AboutValidation.updateAboutZodSchema.parse(
           JSON.parse(req.body.data)
         );
       }
-      return ProductController.updateProduct(req, res, next);
+      return AboutController.updateAboutContent(req, res, next);
     }
   )
-  .delete(auth(USER_ROLES.SUPER_ADMIN), ProductController.deleteProduct);
+  .delete(AboutController.deleteAboutContent);
 
-router.get('/', ProductController.getAllProducts);
+router.get('/', AboutController.getAllAboutContent);
 
-export const ProductRoutes = router;
+export const AboutRoutes = router;

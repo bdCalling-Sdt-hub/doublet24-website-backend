@@ -1,3 +1,10 @@
+export type IOrderStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'SHIPPED'
+  | 'DELIVERED'
+  | 'CANCELED';
+
 export type IOrder = {
   readonly orderId: string;
   fullName: string;
@@ -19,4 +26,6 @@ export type IOrder = {
     quantity: number;
     price: number;
   }>;
+
+  status: IOrderStatus;
 };

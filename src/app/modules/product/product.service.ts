@@ -51,23 +51,45 @@ const getSingleProductFromDB = async (id: string): Promise<IProduct | null> => {
 
 const updateProductToDB = async (
   id: string,
-  payload: Partial<IProduct>
+  payload: any
 ): Promise<IProduct | null> => {
   const isExistProduct = await Product.findById(id);
   if (!isExistProduct) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Product doesn't exist!");
   }
 
-  //unlink files
-  if (payload.image && payload.image.length > 0) {
-    for (let img of isExistProduct.image) {
-      unlinkFile(img);
-    }
+  //filter
+  const updateImages = isExistProduct.image.filter(
+    img => !payload.imagesToDelete.includes(img)
+  );
+
+  console.log(payload.imagesToDelete);
+
+  //unlike delete files
+  for (let img of payload.imagesToDelete) {
+    unlinkFile(img);
   }
 
-  const updateProduct = await Product.findOneAndUpdate({ _id: id }, payload, {
-    new: true,
-  });
+  //insert image
+  if (payload.image && payload.image.length > 0) {
+    updateImages.push(...payload.image);
+  }
+
+  //update product
+  const updateData = {
+    ...payload,
+    image: updateImages.length > 0 ? updateImages : isExistProduct.image,
+  };
+
+  console.log(updateData);
+
+  const updateProduct = await Product.findOneAndUpdate(
+    { _id: id },
+    updateData,
+    {
+      new: true,
+    }
+  );
   return updateProduct;
 };
 

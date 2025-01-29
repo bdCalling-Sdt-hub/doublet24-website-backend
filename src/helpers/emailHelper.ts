@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async (values: ISendEmail) => {
   try {
+    //sending mail
     const info = await transporter.sendMail({
       from: `"Cannasseurs" ${config.email.from}`,
       to: values.to,
@@ -24,6 +25,7 @@ const sendEmail = async (values: ISendEmail) => {
 
     logger.info('Mail send successfully', info.accepted);
   } catch (error) {
+    console.log('err', error);
     errorLogger.error('Email', error);
   }
 };
