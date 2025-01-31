@@ -7,6 +7,7 @@ import { OrderRoutes } from '../app/modules/order/order.route';
 import { ProductRoutes } from '../app/modules/product/product.route';
 import { RuleRoutes } from '../app/modules/rule/rule.route';
 import { SubcategoryRoutes } from '../app/modules/subcategory/subcategory.route';
+import { SubscriberRoutes } from '../app/modules/subscriber/subscriber.route';
 import { UserRoutes } from '../app/modules/user/user.route';
 const router = express.Router();
 
@@ -46,6 +47,10 @@ const apiRoutes = [
   {
     path: '/about',
     route: AboutRoutes,
+  },
+  {
+    path: '/subscriber',
+    route: SubscriberRoutes,
   },
 ];
 

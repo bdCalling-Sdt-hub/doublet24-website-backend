@@ -38,7 +38,30 @@ const resetPassword = (values: IResetPassword) => {
   return data;
 };
 
+const subscriberReplied = (values: any) => {
+  const data = {
+    to: values.email,
+    subject: 'Response from Trade Couples Admin Team',
+    html: `<body style="font-family: Verdana; background-color: #f9f9f9; margin: 50px; padding: 20px; color: #555;">
+    <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <img src="https://i.postimg.cc/Kj58L6Hp/Vector.png" alt="Logo" style="display: block; margin: 0 auto 20px; width:150px" />
+          <h2 style="color: #173616; font-size: 24px; margin-bottom: 20px;">Hey! ${values.name}</h2>
+        <div style="">
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">${values.description}</p>
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">We look forward to your reply.</p>
+            <p style="color: #555; font-size: 16px;">Regards,</p>
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">The Cannasseurs Club Admin Team</p>
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">This is shared with ${values.email}</p>
+            <p style="color: #b9b4b4; font-size: 16px; line-height: 1.5; margin-bottom: 20px;text-align:left">Help Center, powered by The Cannasseurs, sent you this message.</p>
+        </div>
+    </div>
+</body>`,
+  };
+  return data;
+};
+
 export const emailTemplate = {
   createAccount,
   resetPassword,
+  subscriberReplied,
 };
