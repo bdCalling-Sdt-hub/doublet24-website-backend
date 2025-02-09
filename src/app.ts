@@ -15,7 +15,13 @@ app.use(Morgan.errorHandler);
 //body parser
 app.use(
   cors({
-    origin: ['https://apu.binarybards.online', 'http://localhost:3000'],
+    origin: [
+      'https://apu.binarybards.online',
+      'http://localhost:3000',
+      'http://68.178.202.182:4173',
+      'http://cannasseurshemp.com/',
+      'https://cannasseurshemp.com/',
+    ],
     credentials: true,
   })
 );
